@@ -5,4 +5,4 @@
 ./watchdog-bot/node_modules
 ./jsbot/node_modules
 ./backlog
-.env
+./.env
