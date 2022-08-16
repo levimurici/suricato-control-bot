@@ -1,0 +1,8 @@
+./jsbot
+./pybot
+./teste_req
+./main-bot/node_modules
+./watchdog-bot/node_modules
+./jsbot/node_modules
+./backlog
+.env
