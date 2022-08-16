@@ -6,3 +6,4 @@
 ./jsbot/node_modules
 ./backlog
 ./.env
+./Makefile
