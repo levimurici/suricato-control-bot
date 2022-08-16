@@ -1,7 +1,6 @@
-./jsbot
-./pybot
-./teste_req
-./node_modules
-./backlog
-./.env
-./Makefile
+**/logs
+*.log
+*cache
+node_modules
+.env
+Makefile
