@@ -20,7 +20,7 @@ env:
 
 
 jobs:
-  build-docker:
+  build-push-docker:
     runs-on: ubuntu-latest
     environment:
       name: dev
@@ -30,7 +30,7 @@ jobs:
       # É possível customizar actions e publicar para serem usadas pela comunicado
       # Nesse caso precisariam ser referenciadas <repo/action@version> 
       - uses: actions/checkout@v3 # ${{ github.repository }}
-      - name: Configurando NodeJS
+      - name: Configurando NodeJS e build da imagem
         uses: actions/setup-node@v3
         with:
           node-version: 14
@@ -38,8 +38,8 @@ jobs:
       - run: docker build . --tag=${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
       - name: Subindo para o dockerhub
-        #Push em comandos com múltiplas linhas
+        # Push em comandos com múltiplas linhas
         run: |
-            docker login {{ secrets.DOCKER_HUB_USERNAME }}
-            {{ secrets.DOCKER_HUB_PASSWORD }}
+            docker login ${{ secrets.DOCKER_HUB_USERNAME }}
+            ${{ secrets.DOCKER_HUB_PASSWORD }}
             docker push ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
