@@ -1,4 +1,10 @@
-name: docker-build-publish
+name: 052-docker-ghcr-workflow
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
 on:
   # schedule:
   #   - cron: '30 22 * * *'
@@ -8,9 +14,14 @@ on:
     tags: none # [ 'v*.*.*' ]
   pull_request:
     branches: none # [ main ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+env:
+  IMAGE_NAME: ${{ github.repository }}
+  # IMAGE_NAME: dendebaiano/suricato-control-bot 
+  IMAGE_TAG: 1.0.${{ github.run_number }} # GITHUB_RUN_NUMBER }}
+
 
 
 jobs:
@@ -20,21 +31,20 @@ jobs:
       name: dev
       url: 'suricato.com.br'
     steps:
-      - uses: actions/checkout@v3
+      # Usa uma das actions oficiais do github checkout
+      # É possível customizar actions e publicar para serem usadas pela comunicado
+      # Nesse caso precisariam ser referenciadas <repo/action@version> 
+      - uses: actions/checkout@v3 # ${{ github.repository }}
       - name: Configurando NodeJS
         uses: actions/setup-node@v3
         with:
           node-version: 14
       - run: npm install
+      - run: docker build . --tag=${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
-  push-docker:
-    runs-on: ubuntu-latest
-    environment:
-      name: dev
-      url: 'suricato.com.br'
-    needs: build-docker
-    steps:
-      - uses: actions/checkout@v3
       - name: Subindo para o dockerhub
-        run: echo Empurrando pra dockerhub
-      
+        # Push em comandos com múltiplas linhas
+        # run: |
+        #     docker login {{ secrets.DOCKER_HUB_USERNAME }}
+        #     {{ secrets.DOCKER_HUB_USERNAME }}
+        #     docker push ${{ env.IMAGE_NAME }}
